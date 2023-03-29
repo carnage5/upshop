@@ -1,6 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 const mongoose=require('mongoose')
+require('dotenv').config()
 const app = express()
 app.use(cors())
 app.use(express.json())
@@ -21,10 +22,7 @@ const UserSchema=new schema({
         required:true
     }
 })
-const loginmodel=mongoose.model('User',UserSchema)
-
-
-
+const loginmodel=mongoose.model('Users',UserSchema)
 app.get('/',(req,res)=>{
     res.json({message:"HEllo from uc1"})
 })
@@ -35,17 +33,19 @@ app.post('/login',async(req,res)=>{
         if (!data) {
             throw Error('Email not registered')
         }
-        if (data.password != password) {
+        else if (data.password != password) {
             throw Error('incorrect password')
         }
-        res.status(200).json(data.email)
+        else
+            res.status(200).json(data.email)
     }
     catch(error){
         res.status(400).json({ error: error.message })
     }
 })
-router.post('/signup',async (req,res)=>{
+app.post('/signup',async (req,res)=>{
     const {email,password}=req.body
+    console.log(req.body)
     console.log(req.body)
     try {
         const user=await loginmodel.create({email,password})
@@ -53,6 +53,10 @@ router.post('/signup',async (req,res)=>{
     }catch(error){
         res.status(400).json({error:error.message})
     }
-    res.json({message:'posted to /login'})
 })
-app.listen(5001,()=>console.log("uc1 running"))
+mongoose.connect(process.env.MURL) //connect to database , then create middleware server
+.then(()=>{
+    app.listen(5001,()=>console.log("uc1 running"))
+}).catch((error) => {
+    console.log(error)
+})

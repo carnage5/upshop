@@ -17,13 +17,29 @@ function Login() {
             [tempname]:tempvalue
         })
     }
-    const handlesubmit =(event)=>{
+    const handlesubmit =async (event)=>{
         event.preventDefault()
-        setuser({
-            email:"",
-            password:""
-        })
-        nav('/search')
+        var email=user.email
+        var password=user.password
+        const res = await fetch('http://localhost:5001/login',{
+                method:'POST',
+                headers:{'Content-type':'application/json'},
+                body:JSON.stringify({email,password})
+            })
+            const json=await res.json();
+            console.log(json)
+            if(res.ok)
+            {
+                alert("succesfuly signed up")
+                setuser({
+                    email:"",
+                    password:"",
+                })
+                nav('/search')
+            }
+            else{
+                alert(json.error)
+            }
     }
     return (<div>
         <h1>login</h1>
