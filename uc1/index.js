@@ -46,7 +46,6 @@ app.post('/login',async(req,res)=>{
 app.post('/signup',async (req,res)=>{
     const {email,password}=req.body
     console.log(req.body)
-    console.log(req.body)
     try {
         const user=await loginmodel.create({email,password})
         res.status(200).json(user)
