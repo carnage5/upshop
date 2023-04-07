@@ -1,20 +1,25 @@
 import { useEffect, useState } from "react";
 import Display from "./display";
+import { useNavigate, useParams } from "react-router-dom";
 
 function Search() {
-    const [query,setquery]=useState("")
-    const [qsearch,setqsearch]=useState(false)
+    const param = useParams()
+    const nav= useNavigate()
+    const [query,setquery]=useState(param.product)
     const [plist,setplist]= useState([])
     const getproducts=async()=>{
         var res
-        if(qsearch)
+        if(query)
             { res=await fetch('http://localhost:5002/product/'+query)}
         else
             { res = await fetch('http://localhost:5002/product')}
         const json = await res.json()
         if(res.ok)
             setplist([...json])
-        console.log(plist)
+        if(query)
+        nav("/search/"+query)
+        else
+        nav("/search")
     }
     const changeval=(event)=>{
         var tval = event.target.value
@@ -22,15 +27,12 @@ function Search() {
     }
     const handlesubmit=(event)=>{
         event.preventDefault()
-        setqsearch(true)
         getproducts()
-        console.log(query)
     }
     useEffect(() => {
         getproducts()
     }, []);
     return ( <div className="w-full">
-        
         <h1>search</h1>
         <form onSubmit={handlesubmit}>   
             <label for="default-search" class=" mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
@@ -45,7 +47,6 @@ function Search() {
         <div className="flex bg-red-500 justify-center container px-5 py-5 mx-auto w-full ">
         <div className="grid grid-cols-2 gap-2 bg-purple-500 items-center md:grid md:grid-cols-4 md:gap-4">
         {plist.map((n) => (
-                        console.log(n._id),
                         <Display key={n._id} name={n.name} imgsrc={n.imgsrc} desc={n.desc} price={n.price} />))}
         </div>
         </div>

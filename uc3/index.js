@@ -59,13 +59,13 @@ app.post('/buy',async (req,res)=>{
     res.status(200).json(nresult)
     console.log("shifted items from current cart to cart history")
 })
-app.post('/getcart',async (req,res)=>{
-    const {user}=req.body
+app.get('/getcart/:user',async (req,res)=>{
+    const user=req.params.user
     const uresult = await userhistory.find({user:user})
     res.status(200).json(uresult[0].curr_cart)
 })
-app.post('/history',async(req,res)=>{
-    const {user}=req.body
+app.get('/history/:user',async(req,res)=>{
+    const user=req.params.user
     const uresult = await userhistory.find({user:user})
     res.status(200).json(uresult[0].cart_history)
 })

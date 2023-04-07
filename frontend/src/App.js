@@ -20,7 +20,7 @@ function App() {
         <Route path='search' element={<Search/>}/>
         <Route path='details' element={<Details/>}/>
         <Route path='cart' element={<Cart/>}/>
-        <Route path='/search/:name' element={<Login/>}/>
+        <Route path='/search/:product' element={<Search/>}/>
       </Routes>
       </BrowserRouter>
     </div>
