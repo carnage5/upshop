@@ -29,7 +29,8 @@ function Login() {
             const json=await res.json();
             console.log(json)
             if(res.ok)
-            {
+            {   
+                localStorage.setItem('user',JSON.stringify(json))
                 alert("successfuly Logged in")
                 setuser({
                     email:"",

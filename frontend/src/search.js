@@ -43,8 +43,9 @@ function Search() {
             </div>
         </form>
         <div className="flex bg-red-500 justify-center container px-5 py-5 mx-auto w-full ">
-        <div className="grid grid-cols-4 gap-4 bg-purple-500 items-center">
+        <div className="grid grid-cols-2 gap-2 bg-purple-500 items-center md:grid md:grid-cols-4 md:gap-4">
         {plist.map((n) => (
+                        console.log(n._id),
                         <Display key={n._id} name={n.name} imgsrc={n.imgsrc} desc={n.desc} price={n.price} />))}
         </div>
         </div>

@@ -47,14 +47,15 @@ app.post('/product',async (req,res)=>{
 app.get('/product/:id',async (req,res)=>{
     const name=req.params.id
     console.log(name)
-    const presult=await productmodel.find({name:name})
+    const presult=await productmodel.find({name:new RegExp(name,"i")})
     if(!presult)
         res.status(400).json({error:"product doesnt exist"})
     else
         res.status(200).json(presult)
 })
 app.get('/product',async (req,res)=>{
-    const plist=await productmodel.find({})
+    const plist=await productmodel.find({}).limit(52)
+    console.log(plist.length)
     res.status(200).json(plist)
     console.log("got products")
 })
