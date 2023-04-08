@@ -1,12 +1,12 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from './home';
 import Login from './login';
-import logo from './logo.svg';
 import Search from './search';
 import Signup from './signup';
 import Details from './details';
 import Navbar from './navbar';
 import Cart from './cart';
+import Order from './orders';
 
 function App() {
   return (
@@ -18,12 +18,15 @@ function App() {
         <Route path='login' element={<Login/>}/>
         <Route path='signup' element={<Signup/>}/>
         <Route path='search' element={<Search/>}/>
-        <Route path='details' element={<Details/>}/>
+        <Route path='/product/:id' element={<Details/>}/>
         <Route path='cart' element={<Cart/>}/>
         <Route path='/search/:product' element={<Search/>}/>
+        <Route path='/order/:user' element={<Order/>}/>
       </Routes>
       </BrowserRouter>
+      
     </div>
+
   );
 }
 

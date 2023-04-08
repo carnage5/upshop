@@ -1,9 +1,26 @@
-import { useLocation } from "react-router-dom";
+import { useState } from "react";
+import { useLocation, useParams } from "react-router-dom";
 
 function Details() {
+  const param = useParams()
+  const [quan,setquan]=useState(1)
     const loc = useLocation()
-    const addcart=()=>{
-        alert("added to cart")
+    const changeval=(event)=>{
+      setquan(event.target.value)
+    }
+    const addcart=async ()=>{
+        var user = localStorage.user
+        var id=param.id
+        const res = await fetch("http://localhost:5003/addcart",{
+          method:"POST",
+          headers:{'Content-type':'application/json'},
+          body:JSON.stringify({user,id,quan})
+        })
+        const json = await res.json()
+        if(res.ok)
+         alert("added to cart")
+        else
+          alert(json.error)
     }
     return ( <div>
     <section class="text-gray-600 body-font overflow-hidden ">
@@ -22,7 +39,7 @@ function Details() {
           <div class="flex items-center">
           <span class="mr-3">Quantity</span>
             <div class="relative">
-            <input type="number" class="rounded w-20 border appearance-none border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-200 focus:border-red-500 text-base p-2"/>
+            <input type="number" onChange={changeval} value={quan} class="rounded w-20 border appearance-none border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-200 focus:border-red-500 text-base p-2"/>
 
               </div>
           </div>

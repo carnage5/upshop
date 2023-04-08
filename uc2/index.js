@@ -53,6 +53,15 @@ app.get('/product/:id',async (req,res)=>{
     else
         res.status(200).json(presult)
 })
+app.get('/getproduct/:id',async (req,res)=>{
+    const id=req.params.id
+    console.log(id)
+    const presult=await productmodel.findOne({_id:id})
+    if(!presult)
+        res.status(400).json({error:"product doesnt exist"})
+    else
+        res.status(200).json(presult)
+})
 app.get('/product',async (req,res)=>{
     const plist=await productmodel.find({}).limit(52)
     console.log(plist.length)

@@ -11,8 +11,18 @@ app.use((req,res,next)=>{
     next()
 })
 const schema = mongoose.Schema
+const prodschema = new schema({
+    product:{
+        type: String,
+        required:true
+    },
+    quantity:{
+        type:Number,
+        default:1
+    }
+})
 const cartschema= new schema({
-    products:[String]
+    products:[prodschema]
 },{timestamps:true})
 const historyschema = new schema({
     user:{
@@ -21,13 +31,14 @@ const historyschema = new schema({
         unique:true
     },
     curr_cart:{
-        type:[String],
+        type:[prodschema],
     },
     cart_history:{
         type:[cartschema],
         default:[]
     }
 })
+const singleprod = mongoose.model('singleprod',prodschema)
 const userhistory=mongoose.model('userhistory',historyschema)
 const listofprods=mongoose.model('listofprods',cartschema)
 
@@ -35,13 +46,17 @@ app.get('/',(req,res)=>{
     res.json({message:"Hello from uc3"})
 })
 app.post('/addcart',async (req,res)=>{
-    const {user,id}=req.body
-    const uresult = await userhistory.findOneAndUpdate({user:user},{"$push":{curr_cart:id}})
+    const {user,id,quan}=req.body
+    const temp = new singleprod
+    temp.product=id
+    temp.quantity=quan
+    const uresult = await userhistory.findOneAndUpdate({user:user},{"$push":{curr_cart:temp}})
+    console.log(uresult)
     if(uresult)
     res.status(200).json(id)
     if(!uresult)
     {  try {
-            const cresult = await userhistory.create({user:user,curr_cart:[id]})
+            const cresult = await userhistory.create({user:user,curr_cart:[temp]})
             res.status(200).json(id)    
         } catch(error)
         {
@@ -55,19 +70,21 @@ app.post('/buy',async (req,res)=>{
     const uresult = await userhistory.find({user:user})
     var temp = new listofprods
     temp.products=[...uresult[0].curr_cart]
+    console.log(temp.products)
     const nresult = await userhistory.findOneAndUpdate({user:user},{curr_cart:[],"$push":{cart_history:temp}})
     res.status(200).json(nresult)
     console.log("shifted items from current cart to cart history")
 })
 app.get('/getcart/:user',async (req,res)=>{
     const user=req.params.user
-    const uresult = await userhistory.find({user:user})
-    res.status(200).json(uresult[0].curr_cart)
+    const uresult = await userhistory.findOne({user:user})
+    res.status(200).json(uresult.curr_cart)
+    
 })
 app.get('/history/:user',async(req,res)=>{
     const user=req.params.user
-    const uresult = await userhistory.find({user:user})
-    res.status(200).json(uresult[0].cart_history)
+    const uresult = await userhistory.findOne({user:user})
+    res.status(200).json(uresult.cart_history)
 })
 mongoose.connect(process.env.MURL) //connect to database , then create middleware server
 .then(()=>{
