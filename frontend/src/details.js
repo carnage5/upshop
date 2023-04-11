@@ -1,15 +1,17 @@
 import { useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 function Details() {
   const param = useParams()
+  const nav = useNavigate()
   const [quan,setquan]=useState(1)
     const loc = useLocation()
     const changeval=(event)=>{
       setquan(event.target.value)
     }
     const addcart=async ()=>{
-        var user = localStorage.user
+      if(localStorage.user)
+       { var user = localStorage.user
         var id=param.id
         const res = await fetch("http://localhost:5003/addcart",{
           method:"POST",
@@ -21,6 +23,11 @@ function Details() {
          alert("added to cart")
         else
           alert(json.error)
+        }
+      else {
+        alert("sign in")
+        nav('/login')
+      }
     }
     return ( <div>
     <section class="text-gray-600 body-font overflow-hidden ">

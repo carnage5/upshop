@@ -4,28 +4,58 @@ import { useNavigate } from "react-router-dom";
 
 function Cart() {
   const [items,setitems]=useState([])
-  const [ctotal,setctotal]=useState(0)
-  const [ref,setref]=useState(1)
+  const [ctotal,setctotal]=useState(null)
+  const [refr,setref]=useState(true)
   const nav = useNavigate()
-  const calctotal=async ()=>{
-    setctotal(0)
-   items.forEach(async function(n){
-    const res=await fetch("http://localhost:5002/getproduct/"+n.product)
-      const json=await res.json()
-      let tprice = await json.price*n.quantity
-      setctotal(prevt=>prevt+tprice)
-   })
-   console.log("done")
-  }
+
   useEffect(() => {
     const getitems=async()=>{
       const res= await fetch("http://localhost:5003/getcart/"+localStorage.user)
       const json=await res.json()
       setitems([...json])
-     }
-    getitems()
-    calctotal()
-  }, []);
+      let temp=0
+      for(const i of json){
+        const res=await fetch("http://localhost:5002/getproduct/"+i.product)
+        const jsonp=await res.json()
+        temp=temp+(jsonp.price*i.quantity)
+       }
+       setctotal(temp)
+      }
+     
+  getitems()  
+      
+  }, [refr]);
+  // useEffect(() => {
+  //   const calctotal= ()=>{
+  //     let temp=0
+  //     console.log(items.length)
+  //     items.forEach((n)=>console.log(n))
+      
+  //     setTimeout(() => {
+  //       calctotal()
+  //     }, 5000);
+  // }, []);
+  // useEffect( () => {
+  //   const calctotal=async ()=>{
+  //     var temp=0
+  //      items.forEach(async function(n){
+  //       const res=await fetch("http://localhost:5002/getproduct/"+n.product)
+  //         const json=await res.json()
+  //         let tprice = await json.price*n.quantity
+  //         temp+=tprice
+  //         console.log("temp "+temp)
+  //      })
+  //      for(let i of items){
+  //       const res=await fetch("http://localhost:5002/getproduct/"+i.product)
+  //       const json=await res.json()
+  //       temp=temp+(json.price*i.quantity)
+  //      }
+  //      setctotal(temp)
+  //     }
+    
+  //   console.log('once')
+  //   calctotal()
+  // }, [items]);
   const checkout = async()=>{
     const user=localStorage.user
     const res = await fetch("http://localhost:5003/buy",{
@@ -49,7 +79,7 @@ function Cart() {
     <div class="grid grid-flow-row gap-4  items-center ">
       {items.map((n)=>(
 
-          <Item key={n.product} id={n.product} quan={n.quantity}/>
+          <Item key={n.product} id={n.product} quan={n.quantity} setr={setref} r={refr}/>
       ))}
     </div>
     <div className="flex flex-wrap items-center justify-around mt-4 bg-slate-200 p-4 rounded-lg">

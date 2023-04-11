@@ -66,6 +66,13 @@ app.post('/addcart',async (req,res)=>{
     }
     console.log("added product to cart")
 })
+app.post('/delcart',async (req,res)=>{
+    const {user,id}=req.body
+    const uresult = await userhistory.findOneAndUpdate({user:user},{"$pull":{curr_cart:{product:id}}})
+    res.status(200).json(uresult)
+
+    
+})
 app.post('/buy',async (req,res)=>{
     const {user,ctotal}=req.body
     const uresult = await userhistory.find({user:user})

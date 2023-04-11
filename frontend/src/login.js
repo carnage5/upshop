@@ -1,8 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
     const nav = useNavigate();
+    useEffect(() => {
+        if(localStorage.user)
+            nav('/')
+    }, []);
     const [user,setuser]=useState(
         {
             email:"",
@@ -36,7 +40,7 @@ function Login() {
                     email:"",
                     password:"",
                 })
-                nav('/')
+                nav(-1)
             }
             else{
                 alert(json.error)
