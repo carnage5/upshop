@@ -1,12 +1,26 @@
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function Navbar() {
   const nav = useNavigate();
+  const [ulog,setlog]=useState(false)
+  const loc = useLocation()
+useEffect(() => {
+  if(localStorage.user)
+    setlog(true)
+}, []);
   const gotocart=()=>{
     nav('/cart')
   }
+  const login=()=>{
+    nav('/login')
+  }
   const logout =()=>{
+    localStorage.removeItem('user')
     alert("logged out")
+    setlog(false)
+    nav('/')
+    
   }
   const goorder=()=>{
     nav('/order/'+localStorage.user)
@@ -15,7 +29,7 @@ function Navbar() {
 
     <nav class="bg-white border-gray-200 dark:bg-red-500">
       <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-        <a href="#" class="flex items-center">
+        <a href="/" class="flex items-center">
           <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Upshop</span>
         </a>
         <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="mobile-menu-2">
@@ -24,7 +38,8 @@ function Navbar() {
               <button class="block py-2 pl-3 pr-4 text-white w-20 bg-gray-700 rounded-lg md:p-1 " onClick={gotocart}>cart</button>
             </li>
             <li>
-              <button class="block py-2 pl-3 pr-4 text-white w-20 bg-gray-700 rounded-lg md:p-1 " onClick={logout}>logout</button>
+             {loc.pathname=="/login" || loc.pathname=="/signup" ? null : ulog ?  <button class="block py-2 pl-3 pr-4 text-white w-20 bg-gray-700 rounded-lg md:p-1 " onClick={logout}>logout</button> :
+               <button class="block py-2 pl-3 pr-4 text-white w-20 bg-gray-700 rounded-lg md:p-1 " onClick={login}>login</button>}
             </li>
             <li>
               <button class="block py-2 pl-3 pr-4 text-white w-20 bg-gray-700 rounded-lg md:p-1 " onClick={goorder}>orders</button>

@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import Display from "./display";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 function Search() {
     const param = useParams()
     const nav= useNavigate()
+    const loc = useLocation()
     const [query,setquery]=useState(param.product)
     const [plist,setplist]= useState([])
     const getproducts=async()=>{
@@ -19,7 +20,7 @@ function Search() {
         if(query)
         nav("/search/"+query)
         else
-        nav("/search")
+        nav("/")
     }
     const changeval=(event)=>{
         var tval = event.target.value
@@ -45,7 +46,7 @@ function Search() {
             </div>
         </form>
         <div className="flex bg-red-500 justify-center container px-5 py-5 mx-auto w-full ">
-        <div className="grid grid-cols-2 gap-2 bg-purple-500 items-center md:grid md:grid-cols-4 md:gap-4">
+        <div className="grid grid-cols-2 gap-2 bg-purple-500 items-center lg:grid lg:grid-cols-4 lg:gap-4">
         {plist.map((n) => (
                         <Display key={n._id} name={n.name} imgsrc={n.imgsrc} desc={n.desc} price={n.price} id={n._id} />))}
         </div>

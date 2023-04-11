@@ -22,7 +22,8 @@ const prodschema = new schema({
     }
 })
 const cartschema= new schema({
-    products:[prodschema]
+    products:[prodschema],
+    total:Number
 },{timestamps:true})
 const historyschema = new schema({
     user:{
@@ -66,11 +67,12 @@ app.post('/addcart',async (req,res)=>{
     console.log("added product to cart")
 })
 app.post('/buy',async (req,res)=>{
-    const {user}=req.body
+    const {user,ctotal}=req.body
     const uresult = await userhistory.find({user:user})
     var temp = new listofprods
     temp.products=[...uresult[0].curr_cart]
-    console.log(temp.products)
+    temp.total=ctotal
+    console.log(temp)
     const nresult = await userhistory.findOneAndUpdate({user:user},{curr_cart:[],"$push":{cart_history:temp}})
     res.status(200).json(nresult)
     console.log("shifted items from current cart to cart history")

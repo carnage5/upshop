@@ -14,10 +14,10 @@ function App() {
       <BrowserRouter>
       <Navbar/>
       <Routes>
-        <Route path='/' element={<Home/>}/>
+        <Route path='/' element={<Search/>}/>
         <Route path='login' element={<Login/>}/>
         <Route path='signup' element={<Signup/>}/>
-        <Route path='search' element={<Search/>}/>
+        {/* <Route path='search' element={<Search/>}/> */}
         <Route path='/product/:id' element={<Details/>}/>
         <Route path='cart' element={<Cart/>}/>
         <Route path='/search/:product' element={<Search/>}/>

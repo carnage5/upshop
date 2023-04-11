@@ -36,7 +36,7 @@ function Login() {
                     email:"",
                     password:"",
                 })
-                nav('/search')
+                nav('/')
             }
             else{
                 alert(json.error)
