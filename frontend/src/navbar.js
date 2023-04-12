@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 function Navbar() {
@@ -34,13 +33,13 @@ function Navbar() {
         <a href="/" className="flex items-center">
           <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Upshop</span>
         </a>
-        <div className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="mobile-menu-2">
-          <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border rounded-lg  md:flex-row md:space-x-8 md:mt-0 md:border-0  ">
+        <div className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1">
+          <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border rounded-lg  md:flex-row md:space-x-5 md:mt-0 md:border-0  ">
             <li>
               <button className="block py-2 pl-3 pr-4 text-white w-20 bg-gray-700 rounded-lg md:p-1 " onClick={gotocart}>cart</button>
             </li>
             <li>
-             {loc.pathname=="/login" || loc.pathname=="/signup" ? null : localStorage.user ?  <button className="block py-2 pl-3 pr-4 text-white w-20 bg-gray-700 rounded-lg md:p-1 " onClick={logout}>logout</button> :
+             {loc.pathname==="/login" || loc.pathname==="/signup" ? null : localStorage.user ?  <button className="block py-2 pl-3 pr-4 text-white w-20 bg-gray-700 rounded-lg md:p-1 " onClick={logout}>logout</button> :
                <button className="block py-2 pl-3 pr-4 text-white w-20 bg-gray-700 rounded-lg md:p-1 " onClick={login}>login</button>}
             </li>
             <li>

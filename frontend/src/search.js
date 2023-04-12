@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import Display from "./display";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 function Search() {
     const param = useParams()
     const nav= useNavigate()
-    const loc = useLocation()
     const [query,setquery]=useState(param.product)
     const [plist,setplist]= useState([])
     const getproducts=async()=>{
@@ -32,7 +31,7 @@ function Search() {
     }
     useEffect(() => {
         getproducts()
-    }, []);
+    });
     return ( <div className="w-full">
         <h1>search</h1>
         <form onSubmit={handlesubmit}>   
@@ -45,8 +44,8 @@ function Search() {
                 <button type="submit" className="text-white absolute right-2.5 bottom-2.5 my-1 bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Search</button>
             </div>
         </form>
-        <div className="flex bg-red-500 justify-center container px-5 py-5 mx-auto w-full ">
-        <div className="grid grid-cols-2 gap-2 bg-purple-500 items-center lg:grid lg:grid-cols-4 lg:gap-4">
+        <div className="flex justify-center container px-5 py-5 mx-auto w-full ">
+        <div className="grid grid-cols-2 gap-2 items-center lg:grid lg:grid-cols-4 lg:gap-4">
         {plist.map((n) => (
                         <Display key={n._id} name={n.name} imgsrc={n.imgsrc} desc={n.desc} price={n.price} id={n._id} />))}
         </div>
