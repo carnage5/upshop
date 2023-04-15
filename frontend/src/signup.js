@@ -37,7 +37,7 @@ function Signup() {
                     password:"",
                     cpassword:""
                 })
-                nav('/search')
+                nav('/')
             }
             else{
                 alert(json.error)

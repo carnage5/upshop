@@ -5,9 +5,10 @@ import { useNavigate, useParams } from "react-router-dom";
 function Search() {
     const param = useParams()
     const nav= useNavigate()
-    const [query,setquery]=useState(param.product)
+    const [query,setquery]=useState()
     const [plist,setplist]= useState([])
     const getproducts=async()=>{
+        console.log("called",query)
         var res
         if(query)
             { res=await fetch('http://localhost:5002/product/'+query)}
@@ -31,7 +32,7 @@ function Search() {
     }
     useEffect(() => {
         getproducts()
-    });
+    },[]);
     return ( <div className="w-full">
         <h1>search</h1>
         <form onSubmit={handlesubmit}>   
