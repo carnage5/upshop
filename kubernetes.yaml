@@ -1,6 +1,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  name: frontend-deployment
+  labels:
+    app: frontend
+spec:
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontend-container
+        image: frontend:latest
+        ports:
+        - containerPort: 5004
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
   name: uc1-deployment
   labels:
     app: uc1
@@ -60,6 +81,19 @@ spec:
         image: akarshj21/uc3:latest
         ports:
         - containerPort: 5003
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: frontend
+  ports:
+  - protocol: TCP
+    port: 5004
+    targetPort: 5004
 ---
 apiVersion: v1
 kind: Service
