@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: uc1-container
-        image: akarshj21/uc1:latest
+        image: uc1image:latest
         ports:
         - containerPort: 5001
 ---
@@ -36,7 +36,7 @@ spec:
     spec:
       containers:
       - name: uc2-container
-        image: akarshj21/uc2:latest
+        image: uc2image:latest
         ports:
         - containerPort: 5002
 ---
@@ -57,7 +57,7 @@ spec:
     spec:
       containers:
       - name: uc3-container
-        image: akarshj21/uc3:latest
+        image: uc3image:latest
         ports:
         - containerPort: 5003
 ---
