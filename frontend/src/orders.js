@@ -7,6 +7,7 @@ function Order() {
     const param = useParams()
     const [ord, setord] = useState([])
     useEffect(() => {
+        console.log(param.user)
         const gethistory = async () => {
             const res = await fetch("http://localhost:5003/history/" + param.user)
             const json = await res.json()
