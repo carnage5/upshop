@@ -16,7 +16,6 @@ pipeline {
                 bat 'docker push akarshj21/uc3:latest'
                 bat 'docker build -t frontend ./frontend'
                 bat 'docker tag frontend abishekd/frontend:latest'
-                bat 'docker push abishekd/frontend:latest'
             }
         }
         
