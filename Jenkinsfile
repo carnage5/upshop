@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                // bat 'cd upshop && git pull'
+                bat 'copy.bat'
                 bat 'docker build -t uc1 ./uc1'
                 bat 'docker tag uc1 akarshj21/uc1:latest'
                 bat 'docker push akarshj21/uc1:latest'
