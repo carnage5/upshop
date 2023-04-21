@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import Item from "./cartitem";
 import Singleorder from "./orderitem";
 
 function Order() {
@@ -16,7 +15,6 @@ function Order() {
         gethistory()
     }, []);
     return (<div>
-        <h1>order</h1>
         <div class="flex flex-col text-center w-full mb-5">
             <h1 class="text-2xl font-medium title-font text-gray-900 tracking-widest">YOUR ORDERS</h1>
         </div>

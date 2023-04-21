@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import Display from "./display";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function Search() {
-    const param = useParams()
     const nav= useNavigate()
     const [query,setquery]=useState()
     const [plist,setplist]= useState([])
@@ -34,7 +33,6 @@ function Search() {
         getproducts()
     },[]);
     return ( <div className="w-full">
-        <h1>search</h1>
         <form onSubmit={handlesubmit}>   
             <label className=" mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
             <div className="relative mx-72">

@@ -69,7 +69,6 @@ function Cart() {
       }
   }
     return (<div>
-        <h1>Cart</h1>
 
 <section class="text-gray-600 body-font w-full">
   <div class="container px-5 py-2 mx-auto w-full">
