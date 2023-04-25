@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 function Search() {
     const nav= useNavigate()
     const [query,setquery]=useState()
-    const [plist,setplist]= useState([])
+    const [plist,setplist]= useState(null)
     const getproducts=async()=>{
         console.log("called",query)
         var res
@@ -45,8 +45,8 @@ function Search() {
         </form>
         <div className="flex justify-center container px-5 py-5 mx-auto w-full ">
         <div className="grid grid-cols-2 gap-2 items-center lg:grid lg:grid-cols-4 lg:gap-4">
-        {plist.map((n) => (
-                        <Display key={n._id} name={n.name} imgsrc={n.imgsrc} desc={n.desc} price={n.price} id={n._id} />))}
+        {plist ? plist.map((n) => (
+                        <Display key={n._id} name={n.name} imgsrc={n.imgsrc} desc={n.desc} price={n.price} id={n._id} />)) : <h1>no products</h1>}
         </div>
         </div>
     </div> );
