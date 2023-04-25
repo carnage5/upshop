@@ -2,7 +2,7 @@ FROM node:16-alpine as builder
 WORKDIR /app
 COPY . .
 
-RUN npm ci 
+RUN npm i 
 RUN npm run build
 ENV NODE_ENV production
 EXPOSE 3000
