@@ -37,6 +37,7 @@ function Signup() {
                     password:"",
                     cpassword:""
                 })
+                localStorage.setItem('user',(json.email))
                 nav('/')
             }
             else{
