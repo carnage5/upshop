@@ -9,7 +9,7 @@ pipeline {
                 bat 'docker tag uc1 akarshj21/uc1:latest'
                 bat 'docker push akarshj21/uc1:latest'
                 bat 'docker build -t uc2 ./uc2'
-                bat 'docker tag uc1 akarshj21/uc2:latest'
+                bat 'docker tag uc2 akarshj21/uc2:latest'
                 bat 'docker push akarshj21/uc2:latest'
                 bat 'docker build -t uc3 ./uc3'
                 bat 'docker tag uc3 akarshj21/uc3:latest'
