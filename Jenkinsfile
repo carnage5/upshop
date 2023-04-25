@@ -14,9 +14,9 @@ pipeline {
                 bat 'docker build -t uc3 ./uc3'
                 bat 'docker tag uc3 akarshj21/uc3:latest'
                 bat 'docker push akarshj21/uc3:latest'
+                bat 'docker rmi abishekd/frontend:latest'
                 bat 'docker build -t frontend ./frontend'
                 bat 'docker tag frontend abishekd/frontend:latest'
-                bat 'docker push abishekd/frontend:latest'
             }
         }
         
