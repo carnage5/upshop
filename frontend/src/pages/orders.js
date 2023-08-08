@@ -10,17 +10,20 @@ function Order() {
         const gethistory = async () => {
             const res = await fetch("http://localhost:5003/history/" + param.user)
             const json = await res.json()
-            setord([...json].reverse())
+            if(res.ok)
+                setord([...json].reverse())
+            else 
+                console.log(json)
         }
         gethistory()
     }, []);
     return (<div>
-        <div class="flex flex-col text-center w-full mb-5">
-            <h1 class="text-2xl font-medium title-font text-gray-900 tracking-widest">YOUR ORDERS</h1>
+        <div className="flex flex-col text-center w-full mb-5">
+            <h1 className="text-2xl font-medium title-font text-gray-900 tracking-widest">YOUR ORDERS</h1>
         </div>
-        {ord.map((n) => (
+        {ord.length>0 ? ord.map((n) => (
                 <Singleorder key={n._id} data={n}/>
-        ))}
+        )): <p>No previous orders</p>}
     </div>);
 }
 

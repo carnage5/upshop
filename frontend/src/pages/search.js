@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Display from "./display";
 import { useNavigate } from "react-router-dom";
 
@@ -6,20 +6,25 @@ function Search() {
     const nav= useNavigate()
     const [query,setquery]=useState()
     const [plist,setplist]= useState(null)
+    
     const getproducts=async()=>{
         console.log("called",query)
         var res
-        if(query)
-            { res=await fetch('http://localhost:5002/product/'+query)}
-        else
-            { res = await fetch('http://localhost:5002/product')}
-        const json = await res.json()
-        if(res.ok)
-            setplist([...json])
-        if(query)
-        nav("/search/"+query)
-        else
-        nav("/")
+       try {
+         if(query)
+             { res=await fetch('http://localhost:5002/product/'+query)}
+         else
+             { res = await fetch('http://localhost:5002/product')}
+         const json = await res.json()
+         if(res.ok)
+             setplist([...json])
+         if(query)
+         nav("/search/"+query)
+         else
+         nav("/")
+       } catch (error) {
+            console.log(error.message)
+       }
     }
     const changeval=(event)=>{
         var tval = event.target.value
@@ -29,9 +34,9 @@ function Search() {
         event.preventDefault()
         getproducts()
     }
-    // useEffect(() => {
-    //     getproducts()
-    // },[]);
+    useEffect(() => {
+        getproducts()
+    },[]);
     return ( <div className="w-full">
         <form onSubmit={handlesubmit}>   
             <label className=" mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>

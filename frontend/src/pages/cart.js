@@ -1,5 +1,5 @@
 import { useState,useEffect } from "react";
-import Item from "./cartitem";
+import Item from "../components/cartitem";
 import { useNavigate } from "react-router-dom";
 
 function Cart() {
@@ -12,14 +12,19 @@ function Cart() {
     const getitems=async()=>{
       const res= await fetch("http://localhost:5003/getcart/"+localStorage.user)
       const json=await res.json()
-      setitems([...json])
-      let temp=0
-      for(const i of json){
-        const res=await fetch("http://localhost:5002/getproduct/"+i.product)
-        const jsonp=await res.json()
-        temp=temp+(jsonp.price*i.quantity)
-       }
-       setctotal(temp)
+      if(res.ok)
+       { setitems([...json])
+        let temp=0
+        for(const i of json){
+          const res=await fetch("http://localhost:5002/getproduct/"+i.product)
+          const jsonp=await res.json()
+          temp=temp+(jsonp.price*i.quantity)
+        }
+        setctotal(temp)
+      }
+      else {
+        console.log(json)
+      }
       }
      
   getitems()  
@@ -70,16 +75,16 @@ function Cart() {
   }
     return (<div>
 
-<section class="text-gray-600 body-font w-full">
-  <div class="container px-5 py-2 mx-auto w-full">
-    <div class="flex flex-col text-center w-full mb-5">
-      <h1 class="text-2xl font-medium title-font text-gray-900 tracking-widest">YOUR CART</h1>
+<section className="text-gray-600 body-font w-full">
+  <div className="container px-5 py-2 mx-auto w-full">
+    <div className="flex flex-col text-center w-full mb-5">
+      <h1 className="text-2xl font-medium title-font text-gray-900 tracking-widest">YOUR CART</h1>
     </div>
-    <div class="grid grid-flow-row gap-4  items-center ">
-      {items.map((n)=>(
+    <div className="grid grid-flow-row gap-4  items-center ">
+      {items.length>0 ? items.map((n)=>(
 
           <Item key={n.product} id={n.product} quan={n.quantity} setr={setref} r={refr}/>
-      ))}
+      )): <p>Cart is empty</p>}
     </div>
     <div className="flex flex-wrap items-center justify-around mt-4 bg-slate-200 p-4 rounded-lg">
       <h1 className="text-black font-semibold text-2xl">Cart total - Rs {ctotal}</h1>
