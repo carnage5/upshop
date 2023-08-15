@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import Singleorder from "./orderitem";
+import Singleorder from "../components/orderitem";
 
 function Order() {
     const param = useParams()
@@ -8,12 +8,16 @@ function Order() {
     useEffect(() => {
         console.log(param.user)
         const gethistory = async () => {
-            const res = await fetch("http://localhost:5003/history/" + param.user)
-            const json = await res.json()
-            if(res.ok)
-                setord([...json].reverse())
-            else 
-                console.log(json)
+            try {
+                const res = await fetch("http://localhost:5003/history/" + param.user)
+                const json = await res.json()
+                if(res.ok)
+                    setord([...json].reverse())
+                else 
+                    console.log(json)
+            } catch (error) {
+                console.log(error)
+            }
         }
         gethistory()
     }, []);

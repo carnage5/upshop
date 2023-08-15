@@ -10,21 +10,25 @@ function Cart() {
 
   useEffect(() => {
     const getitems=async()=>{
-      const res= await fetch("http://localhost:5003/getcart/"+localStorage.user)
-      const json=await res.json()
-      if(res.ok)
-       { setitems([...json])
-        let temp=0
-        for(const i of json){
-          const res=await fetch("http://localhost:5002/getproduct/"+i.product)
-          const jsonp=await res.json()
-          temp=temp+(jsonp.price*i.quantity)
+    try {
+        const res= await fetch("http://localhost:5003/getcart/"+localStorage.user)
+        const json=await res.json()
+        if(res.ok)
+         { setitems([...json])
+          let temp=0
+          for(const i of json){
+            const res=await fetch("http://localhost:5002/getproduct/"+i.product)
+            const jsonp=await res.json()
+            temp=temp+(jsonp.price*i.quantity)
+          }
+          setctotal(temp)
         }
-        setctotal(temp)
-      }
-      else {
-        console.log(json)
-      }
+        else {
+          console.log(json)
+        }
+    } catch (error) {
+      console.log(error)
+    }
       }
      
   getitems()  

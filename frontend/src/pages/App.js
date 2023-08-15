@@ -3,9 +3,9 @@ import Login from './login';
 import Search from './search';
 import Signup from './signup';
 import Details from './details';
-import Navbar from './navbar';
 import Cart from './cart';
 import Order from './orders';
+import Navbar from '../components/navbar';
 
 function App() {
   return (

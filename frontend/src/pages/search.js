@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import Display from "./display";
+import Display from "../components/display";
 import { useNavigate } from "react-router-dom";
 
 function Search() {

@@ -1,61 +1,73 @@
 const express = require('express')
 const cors = require('cors')
-const mongoose=require('mongoose')
+const mongoose = require('mongoose')
+const bcrypt = require('bcrypt')
 require('dotenv').config()
 const app = express()
 app.use(cors())
 app.use(express.json())
-app.use(express.urlencoded({extended:true}));
-app.use((req,res,next)=>{
-    console.log(req.path,req.method)
+app.use(express.urlencoded({ extended: true }));
+app.use((req, res, next) => {
+    console.log(req.path, req.method)
     next()
 })
 const schema = mongoose.Schema
-const UserSchema=new schema({
-    email:{
+const UserSchema = new schema({
+    email: {
         type: String,
-        required:true,
-        unique:true
+        required: true,
+        unique: true
     },
     password: {
         type: String,
-        required:true
+        required: true
     }
 })
-const loginmodel=mongoose.model('Users',UserSchema)
-app.get('/',(req,res)=>{
-    res.json({message:"HEllo from uc1"})
+const loginmodel = mongoose.model('Users', UserSchema)
+app.get('/', (req, res) => {
+    res.json({ message: "HEllo from uc1" })
 })
-app.post('/login',async(req,res)=>{
-    const {email,password}=req.body
-    try{
-        const data =await loginmodel.findOne({email})
+app.post('/login', async (req, res) => {
+    const { email, password } = req.body
+    try {
+        const data = await loginmodel.findOne({ email })
+        const check = await bcrypt.compare(password,data.password)
         if (!data) {
             throw Error('Email not registered')
         }
-        else if (data.password != password) {
+        else if (!check) {
+            
             throw Error('incorrect password')
         }
         else
             res.status(200).json(data.email)
     }
-    catch(error){
+    catch (error) {
         res.status(400).json({ error: error.message })
     }
 })
-app.post('/signup',async (req,res)=>{
-    const {email,password}=req.body
+app.post('/signup', async (req, res) => {
+    const { email, password } = req.body
     console.log(req.body)
-    try {
-        const user=await loginmodel.create({email,password})
-        res.status(200).json(user)
-    }catch(error){
-        res.status(400).json({error:error.message})
+    
+    const exists = await loginmodel.findOne({ email })
+    if (exists) {
+        res.status(400).json({ error: "This user already exists" })
+    }
+    else {
+        const salt = await bcrypt.genSalt()
+        const hashpw = await bcrypt.hash(password,salt)
+        try {
+            const user = await loginmodel.create({ email, password:hashpw })
+            res.status(200).json(user)
+        } catch (error) {
+            res.status(400).json({ error: error.message })
+        }
     }
 })
 mongoose.connect(process.env.MURL) //connect to database , then create middleware server
-.then(()=>{
-    app.listen(5001,()=>console.log("uc1 running"))
-}).catch((error) => {
-    console.log(error)
-})
+    .then(() => {
+        app.listen(5001, () => console.log("uc1 running"))
+    }).catch((error) => {
+        console.log(error)
+    })
